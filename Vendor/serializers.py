@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Vendor
+from .models import Vendor, PurchaseOrder
 
 class VendorSerializer(serializers.ModelSerializer):
     class Meta:
@@ -22,3 +22,10 @@ class VendorSerializer(serializers.ModelSerializer):
         instance.vendor_code = validated_data.get('vendor_code', instance.vendor_code)
         instance.save()
         return instance
+    
+    
+    
+class PurchaseOrderSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = PurchaseOrder
+        fields = '__all__'
