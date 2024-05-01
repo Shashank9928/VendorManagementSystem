@@ -37,7 +37,7 @@ class HistoricalPerformance(models.Model):
     vendor = models.ForeignKey(
         Vendor, on_delete=models.CASCADE, related_name='historical_performances'
     )
-    date = models.DateTimeField(auto_now_add=True)
+    date = models.DateField()
     on_time_delivery_rate = models.FloatField(default=0.0)
     quality_rating_avg = models.FloatField(default=0.0)
     average_response_time = models.FloatField(default=0.0)
