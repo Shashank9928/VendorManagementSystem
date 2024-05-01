@@ -167,7 +167,11 @@ def calculate_quality_rating_average(vendor):
     """
     Calculate and update the average quality rating for completed POs of a vendor.
     """
-    quality_ratings = PurchaseOrder.objects.filter(vendor=vendor, status='completed', quality_rating__isnull=False).aggregate(Avg('quality_rating'))
+    quality_ratings = PurchaseOrder.objects.filter(
+        vendor=vendor, 
+        status='completed', 
+        quality_rating__isnull=False
+    ).aggregate(Avg('quality_rating'))
     vendor.quality_rating_avg = quality_ratings['quality_rating__avg'] or 0
     vendor.save()
 
