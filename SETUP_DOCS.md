@@ -8,10 +8,9 @@ To provide comprehensive documentation on setting up your Django application, ru
 #### 1. Cloning the Repository
 First, clone the repository to your local machine using git. Open a terminal and run the following command:
 ```bash
-git clone <repository_url>
-cd <repository_name>
+git clone <https://github.com/Shashank9928/VendorManagementSystem.git>
+cd <VendorManagementSystem>
 ```
-Replace `<repository_url>` with the actual URL of your repository and `<repository_name>` with the name of the repository.
 
 #### 2. Setting Up a Virtual Environment
 It's recommended to use a virtual environment for Python projects to manage dependencies separately from your global Python installation. If you haven't installed `virtualenv` yet, you can install it using pip:
