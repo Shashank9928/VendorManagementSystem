@@ -230,14 +230,17 @@ class VendorPurchaseOrderPerformanceTests(APITestCase):
                 self.purchase_order = po
 
         # Historical performance setup
-        self.historical_performance = HistoricalPerformance.objects.create(
+        historical_performance, created = HistoricalPerformance.objects.get_or_create(
             vendor=self.vendor,
             date=timezone.now().date(),
-            on_time_delivery_rate=95.0,
-            quality_rating_avg=4.25,
-            average_response_time=2.0,
-            fulfillment_rate=100.0
+            defaults={
+                'on_time_delivery_rate': 95.0,
+                'quality_rating_avg': 4.25,
+                'average_response_time': 2.0,
+                'fulfillment_rate': 100.0,
+            }
         )
+        self.historical_performance = historical_performance
 
     def test_vendor_performance_retrieval(self):
         url = reverse('vendor-performance', kwargs={'vendor_id': self.vendor.id})
@@ -255,9 +258,11 @@ class VendorPurchaseOrderPerformanceTests(APITestCase):
         self.assertEqual(response.data['message'], 'Purchase order acknowledged successfully.')
 
     def test_update_historical_performance(self):
-        # Ensure the background task or signal updates the historical data
+        # Manually trigger update to reflect changes
         self.purchase_order.status = 'completed'
+        self.purchase_order.quality_rating = 4.5  # Changing quality rating to trigger average calculation
         self.purchase_order.save()
         self.historical_performance.refresh_from_db()
-        # This checks that a value has changed, though it may need more precise expectations based on actual calculations
-        self.assertNotEqual(self.historical_performance.fulfillment_rate, 98.0)
+        # Check if fulfillment rate changes as expected based on completion status
+        expected_fulfillment_rate = (1 / 1) * 100  # Assuming this PO is the only one considered
+        self.assertEqual(self.historical_performance.fulfillment_rate, expected_fulfillment_rate)

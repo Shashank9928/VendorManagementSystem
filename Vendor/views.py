@@ -262,7 +262,7 @@ def update_or_create_daily_performance(vendor_id):
         historical_record.fulfillment_rate = fulfillment_rate
         historical_record.save()
     else:
-        print("No completed orders found for today")
+        return
         
         
 class VendorPerformanceAPIView(APIView):

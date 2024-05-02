@@ -49,8 +49,6 @@ class VendorSerializer(serializers.ModelSerializer):
         instance.save()
         return instance
     
-    
-    
 class PurchaseOrderSerializer(serializers.ModelSerializer):
     class Meta:
         model = PurchaseOrder

@@ -55,7 +55,6 @@ class PurchaseOrder(models.Model):
         return f"PO {self.po_number} - {self.status}"
 
 
-
 class HistoricalPerformance(models.Model):
     vendor = models.ForeignKey(
         Vendor, 
