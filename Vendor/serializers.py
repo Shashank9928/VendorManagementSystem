@@ -8,10 +8,17 @@ class VendorSerializer(serializers.ModelSerializer):
 
     def validate_vendor_code(self, value):
         """
-        Check that the vendor code is unique and follows a specific format.
+            Check that the vendor code is unique and follows a specific format.
         """
         if not value.isalnum():
             raise serializers.ValidationError("Vendor code must be alphanumeric.")
+
+        # Retrieve the instance being updated, if available
+        instance = self.instance
+        if instance and instance.vendor_code == value:
+            # Skip uniqueness check if the vendor code is not being modified
+            return value
+
         if Vendor.objects.filter(vendor_code=value).exists():
             raise serializers.ValidationError("Vendor code must be unique.")
         return value
@@ -59,6 +66,7 @@ class PurchaseOrderSerializer(serializers.ModelSerializer):
         Add custom validation for the PurchaseOrder data.
         """
         # Ensure delivery date is after order date
+        
         if 'delivery_date' in data and 'order_date' in data:
             if data['delivery_date'] < data['order_date']:
                 raise serializers.ValidationError("Delivery date must be after order date.")
